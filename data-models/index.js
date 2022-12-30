@@ -324,23 +324,27 @@ const getREKTNft = async (userAddress) => {
 
     }
 
-    let txObj = await totalEVMChainsInteracted(userAddress)
+
+    // let txObj = await totalEVMChainsInteracted(userAddress)
+    // let tokenBalanceObj = await getCurrentTokenBalance(userAddress, "ethereum")
+    // let nftObj = await getAllNftTransations(userAddress)
+    let data = await Promise.all([totalEVMChainsInteracted(userAddress), getCurrentTokenBalance(userAddress, "ethereum"), getAllNftTransations(userAddress)]);
+    let txObj = data[0]
+    let tokenBalanceObj = data[1]
+    let nftObj = data[2]
+
+    returnObjTodisplay.totalNftHolding = await getUserNfts(userAddress)
     returnObjTodisplay.totalChainInteracted = txObj.totalChainInteracted
     returnObjTodisplay.totalNumberOftransaction = txObj.totalNumberOftransaction
     returnObjTodisplay.gasSpentGwei = await calculateGasForAddress(userAddress)
 
-    let tokenBalanceObj = await getCurrentTokenBalance(userAddress, "ethereum")
     returnObjTodisplay.totalTokenHolding = tokenBalanceObj.totalTokenHolding
     returnObjTodisplay.numberOfProfitTokens = tokenBalanceObj.numberOfProfitTokens
     returnObjTodisplay.percentProfit = tokenBalanceObj.percentProfit
     returnObjTodisplay.numberOfLossTokens = tokenBalanceObj.numberOfLossTokens
     returnObjTodisplay.percentLoss = tokenBalanceObj.percentLoss
 
-    returnObjTodisplay.totalNftHolding = await getUserNfts(userAddress)
     console.log(returnObjTodisplay);
-
-
-    let nftObj = await getAllNftTransations(userAddress)
 
     rektObj.NumberOfBuy = nftObj.buyQty
     rektObj.NumberOfSell = nftObj.sellqty
@@ -388,5 +392,8 @@ const getREKTNft = async (userAddress) => {
 }
 
 
-
-getREKTNft('lazypoet.eth')
+(async () => {
+    console.time();
+    await getREKTNft('lazypoet.eth')
+    console.timeEnd();
+})()
