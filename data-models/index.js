@@ -28,7 +28,8 @@ let returnObjTodisplay = {
 let rektObj = {
     gasSpentGwei: 0,//
     numberOfVerifiedToken: 0,
-    verifiedValueToNonVerValue: 0,
+    // verifiedValueToNonVerValue: 0,
+    numberOfUnVerifiedToken: 0,
     totalNumberOftransaction: 0, //
     NumberOfBuy: 0,
     NumberOfSell: 0,
@@ -266,8 +267,9 @@ const getCurrentTokenBalance = async (userAddress, getChain) => {
     let totalValueProfitToken = 0;
     let totalValueLossToken = 0;
     let numberOfVerifiedToken = 0;
-    let valueOfVerified = 0
-    let valueOfNonVerified = 0
+    let numberOfUnVerifiedToken = 0;
+    // let valueOfVerified = 0
+    // let valueOfNonVerified = 0
 
     for (let i = 0; i < returnData.length; i++) {
         if (returnData[i].profitLossUSD <= 0) {
@@ -281,21 +283,25 @@ const getCurrentTokenBalance = async (userAddress, getChain) => {
         }
         if (returnData[i].verified == true) {
             numberOfVerifiedToken++;
-            valueOfVerified += returnData[i].tokenValueUsd
+            // valueOfVerified += returnData[i].tokenValueUsd
         } else {
-            valueOfNonVerified += returnData[i].tokenValueUsd
+            numberOfUnVerifiedToken++
+            // valueOfNonVerified += returnData[i].tokenValueUsd
         }
     }
-    let verifiedValueToNonVerValue = valueOfVerified / valueOfNonVerified
 
-    console.log("loss", totalLossUSD)
-    console.log("total loss ", totalValueLossToken)
-    console.log("profit", totalProfitUSD)
-    console.log("total Profit value", totalValueProfitToken)
+    // console.log(valueOfVerified)
+    // console.log(valueOfNonVerified)
+    // let verifiedValueToNonVerValue = valueOfVerified / valueOfNonVerified
+
+    // console.log("loss", totalLossUSD)
+    // console.log("total loss ", totalValueLossToken)
+    // console.log("profit", totalProfitUSD)
+    // console.log("total Profit value", totalValueProfitToken)
 
     let percentLoss = (totalLossUSD / (totalLossUSD + totalValueLossToken)) * 100
     let percentProfit = (totalProfitUSD / (totalProfitUSD + totalValueProfitToken)) * 100
-    return { totalTokenHolding, numberOfProfitTokens, percentProfit, numberOfLossTokens, percentLoss, numberOfVerifiedToken, verifiedValueToNonVerValue, totalProfitUSD, totalLossUSD }
+    return { totalTokenHolding, numberOfProfitTokens, percentProfit, numberOfLossTokens, percentLoss, numberOfVerifiedToken, numberOfUnVerifiedToken, totalProfitUSD, totalLossUSD }
 
 }
 
@@ -353,7 +359,7 @@ const getREKTNft = async (userAddress) => {
     rektObj.totalNumberOftransaction = returnObjTodisplay.totalNumberOftransaction;
     rektObj.gasSpentGwei = returnObjTodisplay.gasSpentGwei
     rektObj.numberOfVerifiedToken = tokenBalanceObj.numberOfVerifiedToken
-    rektObj.verifiedValueToNonVerValue = tokenBalanceObj.verifiedValueToNonVerValue
+    rektObj.numberOfUnVerifiedToken = tokenBalanceObj.numberOfUnVerifiedToken
     rektObj.totalLossUSD = tokenBalanceObj.totalLossUSD
     rektObj.totalProfitUSD = tokenBalanceObj.totalProfitUSD
 
@@ -363,22 +369,22 @@ const getREKTNft = async (userAddress) => {
     let Ether = Math.pow(10, 6)
     //conditionsForNFTs
 
-    if (rektObj.totalNumberOftransaction > 500 && rektObj.NumberOfBuy > 100 && rektObj.NumberOfSell > 100 && rektObj.gasSpentGwei > Ether && rektObj.totalProfitUSD > 10000 && rektObj.totalLossUSD <= 0 && rektObj.numberOfVerifiedToken < 10) {
+    if (rektObj.totalNumberOftransaction > 500 && rektObj.NumberOfBuy > 50 && rektObj.NumberOfSell > 50 && rektObj.gasSpentGwei > Ether && rektObj.totalProfitUSD > 10000 && rektObj.totalLossUSD <= 0 && rektObj.numberOfVerifiedToken < 10) {
         //flipper
         NumberToBeAssigned = 0;
-    } else if (rektObj.totalNumberOftransaction > 500 && rektObj.NumberOfBuy > 100 && rektObj.NumberOfSell < 100 && rektObj.gasSpentGwei > (Ether / 2) && rektObj.totalProfitUSD > 5000 && rektObj.totalLossUSD <= 0 && rektObj.numberOfVerifiedToken > 10) {
+    } else if (rektObj.totalNumberOftransaction > 500 && rektObj.NumberOfBuy > 30 && rektObj.NumberOfSell < 20 && rektObj.gasSpentGwei > (Ether / 2) && rektObj.totalProfitUSD > 5000 && rektObj.totalLossUSD <= 0 && rektObj.numberOfVerifiedToken > 10) {
         //Degen
         NumberToBeAssigned = 1;
 
-    } else if (rektObj.totalNumberOftransaction > 300 && rektObj.NumberOfBuy > 70 && rektObj.NumberOfSell < 50 && rektObj.gasSpentGwei < (Ether / 4) && rektObj.totalProfitUSD > 500 && rektObj.numberOfVerifiedToken > 5) {
+    } else if (rektObj.totalNumberOftransaction > 300 && rektObj.NumberOfBuy > 30 && rektObj.NumberOfSell < 20 && rektObj.gasSpentGwei < (Ether / 4) && rektObj.totalProfitUSD > 500 && rektObj.numberOfVerifiedToken > 5) {
         //hodler
         NumberToBeAssigned = 2;
 
-    } else if (rektObj.totalNumberOftransaction > 50 && rektObj.totalProfitUSD < 100 && rektObj.totalLossUSD > 0 && rektObj.verifiedValueToNonVerValue < 0) {
+    } else if (rektObj.totalNumberOftransaction > 20 && rektObj.totalLossUSD > 100 && rektObj.numberOfUnVerifiedToken > 10) {
         //shitcoinner
         NumberToBeAssigned = 3;
 
-    } else if (rektObj.totalProfitUSD < rektObj.totalLossUSD && rektObj.totalLossUSD > 10000) {
+    } else if (rektObj.totalProfitUSD < rektObj.totalLossUSD && rektObj.totalLossUSD > 2000) {
         //rekt
         NumberToBeAssigned = 4;
 
@@ -389,13 +395,11 @@ const getREKTNft = async (userAddress) => {
     }
 
 
-
+    console.log(NumberToBeAssigned)
     return { returnObjTodisplay, NumberToBeAssigned }
 }
-
-
 (async () => {
     console.time();
-    await getREKTNft('lazypoet.eth')
+    await getREKTNft("0x8aBbA322dA900406C040F924A96B3Da4882B5E3E")
     console.timeEnd();
 })()
