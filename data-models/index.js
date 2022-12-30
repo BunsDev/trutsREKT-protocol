@@ -241,10 +241,12 @@ const getCurrentTokenBalance = async (userAddress, getChain) => {
             allTokenDataobj.verified = resp.data[i].verified
             allTokenDataobj.tokenValueUsd = (resp.data[i].quote)
 
+            if (resp.data[i].verified == true) {
+                let profitinUSD = await getProfitLossWithTokenAddress(userAddress, getChain, resp.data[i].contract_address)
+                allTokenDataobj.profitLossUSD = (profitinUSD);
+            }
 
-            let profitinUSD = await getProfitLossWithTokenAddress(userAddress, getChain, resp.data[i].contract_address)
-            allTokenDataobj.profitLossUSD = (profitinUSD);
-            console.log(allTokenDataobj)
+            // console.log(allTokenDataobj)
             returnData.push(allTokenDataobj)
             allTokenDataobj = {
                 verified: false,
