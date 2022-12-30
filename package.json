@@ -3,19 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@biconomy/mexa": "^2.0.38",
+    "@openzeppelin/contracts": "^4.8.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/node": "^18.0.3",
+    "@types/react": "^18.0.9",
+    "ethers": "^5.0.0",
+    "hardhat-contract-sizer": "^2.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "react-toastify": "^9.0.5",
+    "typescript": "^4.7.2",
+    "util": "0.12.4",
+    "wagmi": "^0.5.3",
+    "web-vitals": "^2.1.4",
+    "web3": "^1.7.4",
+    "webpack": "^5.73.0"
   },
+  "proxy": "http://localhost:5000",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "react-app-rewired start",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --transformIgnorePatterns \"node_modules/(?!@rainbow-me)/\"",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +48,27 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "@types/react-dom": "^18.0.6",
+    "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "env-cmd": "^10.1.0",
+    "fs": "^0.0.1-security",
+    "hardhat": "^2.12.4",
+    "https-browserify": "^1.0.0",
+    "net": "^1.0.2",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "polyfill": "^0.1.0",
+    "react-app-rewired": "^2.2.1",
+    "react-error-overlay": "6.0.9",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "tls": "^0.0.1",
+    "url": "^0.11.0"
   }
 }
