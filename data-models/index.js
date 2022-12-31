@@ -366,21 +366,21 @@ const getREKTNft = async (userAddress) => {
     console.log(rektObj)
 
     let NumberToBeAssigned = 10;
-    let Ether = Math.pow(10, 6)
+    let Ether = Math.pow(10, 7)
     //conditionsForNFTs
 
-    if (rektObj.totalNumberOftransaction > 500 && rektObj.NumberOfBuy > 50 && rektObj.NumberOfSell > 50 && rektObj.gasSpentGwei > Ether && rektObj.totalProfitUSD > 10000 && rektObj.totalLossUSD <= 0 && rektObj.numberOfVerifiedToken < 10) {
+    if ((rektObj.totalNumberOftransaction > 800 && rektObj.gasSpentGwei > Ether) || (rektObj.NumberOfBuy > 50 && rektObj.totalProfitUSD > 5000) || (rektObj.NumberOfSell > 50 && rektObj.totalLossUSD <= 10 && rektObj.numberOfVerifiedToken < 10)) {
         //flipper
         NumberToBeAssigned = 0;
-    } else if (rektObj.totalNumberOftransaction > 500 && rektObj.NumberOfBuy > 30 && rektObj.NumberOfSell < 20 && rektObj.gasSpentGwei > (Ether / 2) && rektObj.totalProfitUSD > 5000 && rektObj.totalLossUSD <= 0 && rektObj.numberOfVerifiedToken > 10) {
+    } else if ((rektObj.totalNumberOftransaction > 500 && rektObj.numberOfVerifiedToken > 10) || (rektObj.NumberOfBuy > 30 && rektObj.gasSpentGwei > (Ether / 2) && rektObj.totalProfitUSD > 3000) || (rektObj.totalLossUSD <= 0 && rektObj.NumberOfSell > 10)) {
         //Degen
         NumberToBeAssigned = 1;
 
-    } else if (rektObj.totalNumberOftransaction > 300 && rektObj.NumberOfBuy > 30 && rektObj.NumberOfSell < 20 && rektObj.gasSpentGwei < (Ether / 4) && rektObj.totalProfitUSD > 500 && rektObj.numberOfVerifiedToken > 5) {
+    } else if ((rektObj.totalNumberOftransaction > 300 && rektObj.NumberOfBuy > 20) || (rektObj.NumberOfSell < 20 && rektObj.gasSpentGwei < (Ether / 2)) || (rektObj.totalProfitUSD > 1000 && rektObj.numberOfVerifiedToken > 5)) {
         //hodler
         NumberToBeAssigned = 2;
 
-    } else if (rektObj.totalNumberOftransaction > 20 && rektObj.totalLossUSD > 100 && rektObj.numberOfUnVerifiedToken > 10) {
+    } else if (rektObj.totalNumberOftransaction > 50 && rektObj.totalLossUSD > 100 && rektObj.numberOfUnVerifiedToken > 10) {
         //shitcoinner
         NumberToBeAssigned = 3;
 
@@ -400,6 +400,6 @@ const getREKTNft = async (userAddress) => {
 }
 (async () => {
     console.time();
-    await getREKTNft("0x8aBbA322dA900406C040F924A96B3Da4882B5E3E")
+    await getREKTNft("dsborde.eth")
     console.timeEnd();
 })()
