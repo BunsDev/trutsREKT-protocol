@@ -6,15 +6,14 @@ import abi from "./contractAbi/trutsNFT.json";
 import { Bounce, toast } from "react-toastify";
 // import {useMoralis} from "react-moralis";
 
-export const gaslessTxn = async (provider, signature, idNumber) => {
+export const gaslessTxn = async (address, signature, idNumber) => {
     let rpc = "https://rpc.ankr.com/polygon_mumbai"
     let contractAddress = "0x0d0f14924c1E9e3A9feE8432296f13A1FCFfB497"
     const { ethereum } = window;
     if (ethereum) {
         console.log("ok bro")
-        const provider = provider;
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
+        // const signer = provider.getSigner();
+        // const address = await signer.getAddress();
         const biconomy = new Biconomy(ethereum, {
             walletProvider: ethereum,
             apiKey: "VPy2_u9yn.20b0e126-46ad-4874-b9aa-38960b495562",

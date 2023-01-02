@@ -4,34 +4,9 @@ import { ethers } from 'ethers'
 // require("dotenv").config();
 import Web3 from 'web3';
 import { gaslessTxn } from './biconomyTx'
-import { useState, useEffect } from 'react';
-
-import '@rainbow-me/rainbowkit/styles.css';
+import { useState, useEffect, useSigner } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import {
-  getDefaultWallets,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { configureChains, createClient, WagmiConfig, useSigner } from 'wagmi';
-import { mainnet, polygon, optimism, arbitrum, polygonMumbai } from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
-const { chains, provider } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, polygonMumbai],
-  [
-    alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
-    publicProvider()
-  ]
-);
-const { connectors } = getDefaultWallets({
-  appName: 'My RainbowKit App',
-  chains
-});
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors,
-  provider
-})
+import { useProvider, useAccount } from 'wagmi'
 
 const web3 = new Web3(Web3.givenProvider);
 const signerOwn = web3.eth.accounts.privateKeyToAccount(
@@ -40,10 +15,11 @@ const signerOwn = web3.eth.accounts.privateKeyToAccount(
 
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState('');
+  const { address, isConnecting, isDisconnected } = useAccount()
   const [mintedLink, setMintedLink] = useState('');
-  // const { data: signer, isError, isLoading } = useSigner()
+  const provider = useProvider()
 
-  const mintTransaction = async () => {
+  const mintTransaction = async (address) => {
     console.log("function")
     try {
       const { ethereum } = window;
@@ -52,16 +28,16 @@ export default function App() {
         console.log(provider)
         // console.log(signer)
 
-        const signer = provider.getSigner();
-        let userAddress = await signer.getAddress()
-        console.log("userAddress: ", userAddress)
+        // const signer = provider.getSigner();
+        // let userAddress = await signer.getAddress()
+        // console.log("userAddress: ", address)
 
-        let message = `0x000000000000000000000000${userAddress.substring(2)}`;
+        let message = `0x000000000000000000000000${address.substring(2)}`;
         let { signature } = signerOwn.sign(message);
         console.log("signerOwn: ", signerOwn.address)
         console.log("signature: ", signature)
-        
-        await gaslessTxn(provider, signature, 2)
+
+        await gaslessTxn(address, signature, 2)
       }
     } catch (err) {
       console.log(err);
@@ -114,36 +90,34 @@ export default function App() {
   }, [])
 
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <div className="App">
-          <header className="App-header">
-            <ConnectButton />
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>
-              Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a>
-            {
-              currentAccount ?
 
-                <button onClick={connectWallet}>
-                  verify user
-                </button>
-                :
-                <button onClick={mintTransaction}>Mint</button>
-            }
-          </header>
-        </div>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <div className="App">
+      <header className="App-header">
+        <ConnectButton />
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+        {
+          currentAccount ?
+
+            <button onClick={connectWallet}>
+              verify user
+            </button>
+            :
+            <button onClick={() => { mintTransaction(address) }}>Mint</button>
+        }
+      </header>
+    </div>
+
   );
 }
 
