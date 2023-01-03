@@ -12,20 +12,32 @@ import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 contract trutsREKT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
     using Strings for uint8;
-    string private baseURI;
+    string public baseURI;
     bool public publicSaleActive;
     string[] public arrayOfTokenUri;
     mapping(bytes => bool) internal signatureUsed;
     address private _signerAddress = 0x50CB4b45B7C3eee59c8e5897af7DD1eFbfCecED4;
-    mapping(address => uint256[]) private _ownerTokens;
-    mapping(uint256 => uint8) private tokenIdToNumber;
+    mapping(uint256 => uint8) public tokenIdToNumber;
+    address[] public admins;
+    mapping(address => bool) public ownerByAddress;
 
     //Constructor
     constructor(
         string memory _name,
         string memory _symbol,
         address _trustedForwarder
-    ) ERC721A(_name, _symbol) ERC2771Context(_trustedForwarder) {}
+    ) ERC721A(_name, _symbol) ERC2771Context(_trustedForwarder) {
+        admins.push(msg.sender);
+        ownerByAddress[msg.sender] = true;
+    }
+
+    modifier onlyAdmins() {
+        require(
+            ownerByAddress[msg.sender] == true,
+            "only admins can call this fucntion "
+        );
+        _;
+    }
 
     function _msgSender()
         internal
@@ -73,9 +85,9 @@ contract trutsREKT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
         return ECDSA.recover(messageDigest, signature);
     }
 
-    function mintNewNFT(bytes memory signature, uint8 _idNUmber) public {
+    function mintNewNFT(bytes memory signature, uint8 _idNumber) public {
         require(publicSaleActive, "not ready for sale");
-        require(_idNUmber < 6, "Token URI does not exist");
+        require(_idNumber < 6, "Token URI does not exist");
         require(balanceOf(_msgSender()) < 1, "Max NFT mint Limit reached");
         require(!signatureUsed[signature], "Signature has already been used.");
         uint256 supply = totalSupply();
@@ -87,8 +99,7 @@ contract trutsREKT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
 
         // require(balanceOf(_msgSender()) == 0, "User already minted");
         _safeMint(_msgSender(), 1);
-        tokenIdToNumber[supply + 1] = _idNUmber;
-        _ownerTokens[_msgSender()].push(supply + 1);
+        tokenIdToNumber[supply + 1] = _idNumber;
         signatureUsed[signature] = true;
     }
 
@@ -115,11 +126,24 @@ contract trutsREKT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
         );
     }
 
-    function setBaseURI(string memory _newBaseURI) public onlyOwner {
+    function setBaseURI(string memory _newBaseURI) public onlyAdmins {
         baseURI = _newBaseURI;
     }
 
-    function setPublicSaleActive(bool _state) public onlyOwner {
+    function setPublicSaleActive(bool _state) public onlyAdmins {
         publicSaleActive = _state;
+    }
+
+    function updateOwner(address _newAddress) public onlyOwner {
+        transferOwnership(_newAddress);
+    }
+
+    function addAdminAddress(address _adminAddress) public onlyAdmins {
+        admins.push(_adminAddress);
+        ownerByAddress[_adminAddress] = true;
+    }
+
+    function getAdmins() public view returns (address[] memory) {
+        return admins;
     }
 }

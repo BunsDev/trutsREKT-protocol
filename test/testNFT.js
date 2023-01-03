@@ -31,8 +31,6 @@ describe("lyncrent", () => {
         await token721.deployed();
         console.log("token721 address", token721.address)
 
-
-
     });
 
     describe("Testing for token721 nft contract", () => {

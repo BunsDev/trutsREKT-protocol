@@ -9,6 +9,7 @@ async function main() {
         });
     }
     const mumbaiForwarder = "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
+    const polygonForwarder = ""
     const Contract = await ethers.getContractFactory('trutsREKT')
     const contract = await Contract.deploy("trutsNFT", "TREKT", mumbaiForwarder)
     await contract.deployed()

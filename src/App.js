@@ -12,14 +12,22 @@ import {
   getDefaultWallets,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
-import { configureChains, createClient, WagmiConfig, useSigner } from 'wagmi';
-import { mainnet, polygon, optimism, arbitrum, polygonMumbai } from 'wagmi/chains';
+import { useSignMessage, useSigner, useAccount , useClient} from 'wagmi'
+import { configureChains, createClient, WagmiConfig } from 'wagmi';
+import { polygon, polygonMumbai } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
 const { chains, provider } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, polygonMumbai],
+  [polygon, polygonMumbai],
   [
-    alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
+    jsonRpcProvider({
+      rpc: () => {
+        return {
+          http: 'https://rpc.ankr.com/polygon_mumbai', // go to https://www.ankr.com/protocol/ to get a free RPC for your network
+        };
+      },
+    }),
     publicProvider()
   ]
 );
@@ -41,27 +49,26 @@ const signerOwn = web3.eth.accounts.privateKeyToAccount(
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState('');
   const [mintedLink, setMintedLink] = useState('');
-  // const { data: signer, isError, isLoading } = useSigner()
-
+  // const { address, isConnecting, isDisconnected } = useAccount()
   const mintTransaction = async () => {
     console.log("function")
     try {
       const { ethereum } = window;
       if (ethereum) {
-        // const provider = new ethers.providers.Web3Provider(ethereum);
+        const providerOne = new ethers.providers.Web3Provider(ethereum);
         console.log(provider)
-        // console.log(signer)
+        // console.log(address)
 
-        const signer = provider.getSigner();
-        let userAddress = await signer.getAddress()
+        const signerOk = providerOne.getSigner();
+        let userAddress = await signerOk.getAddress()
         console.log("userAddress: ", userAddress)
 
         let message = `0x000000000000000000000000${userAddress.substring(2)}`;
         let { signature } = signerOwn.sign(message);
         console.log("signerOwn: ", signerOwn.address)
         console.log("signature: ", signature)
-        
-        await gaslessTxn(provider, signature, 2)
+
+        await gaslessTxn(providerOne, signature, 2)
       }
     } catch (err) {
       console.log(err);
