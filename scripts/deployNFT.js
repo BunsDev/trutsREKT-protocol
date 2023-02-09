@@ -9,15 +9,15 @@ async function main() {
         });
     }
     const mumbaiForwarder = "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
-    const polygonForwarder = ""
-    const Contract = await ethers.getContractFactory('trutsREKT')
-    const contract = await Contract.deploy("trutsNFT", "TREKT", mumbaiForwarder)
+    //const polygonForwarder = "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
+    const Contract = await ethers.getContractFactory('trutsPlatformNFT')
+    const contract = await Contract.deploy("Truts Platform", "TRUTS", mumbaiForwarder)
     await contract.deployed()
     console.log('NFT Contract deployed to:', contract.address)
     await contract.deployed();
     await hre.run("verify:verify", {
         address: contract.address,
-        constructorArguments: ["trutsREKT", "TREKT", mumbaiForwarder],
+        constructorArguments: ["Truts Platform", "TRUTS", mumbaiForwarder],
     });
 }
 main()

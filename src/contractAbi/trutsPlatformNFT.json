@@ -299,19 +299,6 @@
     },
     {
         "inputs": [],
-        "name": "baseURI",
-        "outputs": [
-            {
-                "internalType": "string",
-                "name": "",
-                "type": "string"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
         "name": "currentIndex",
         "outputs": [
             {
@@ -406,9 +393,9 @@
                 "type": "bytes"
             },
             {
-                "internalType": "uint8",
-                "name": "_idNumber",
-                "type": "uint8"
+                "internalType": "string",
+                "name": "_tokenURI",
+                "type": "string"
             }
         ],
         "name": "mintNewNFT",
@@ -572,19 +559,6 @@
     {
         "inputs": [
             {
-                "internalType": "string",
-                "name": "_newBaseURI",
-                "type": "string"
-            }
-        ],
-        "name": "setBaseURI",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "internalType": "bool",
                 "name": "_state",
                 "type": "bool"
@@ -635,12 +609,12 @@
                 "type": "uint256"
             }
         ],
-        "name": "tokenIdToNumber",
+        "name": "tokenIdToTokenUri",
         "outputs": [
             {
-                "internalType": "uint8",
+                "internalType": "string",
                 "name": "",
-                "type": "uint8"
+                "type": "string"
             }
         ],
         "stateMutability": "view",

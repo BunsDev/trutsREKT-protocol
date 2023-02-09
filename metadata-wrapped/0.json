@@ -1,0 +1,17 @@
+{
+    "name": "Truts Wrapped",
+    "description": "Truts Wrapped NFT marks the end of a rollercoaster of the year 2022. See how you fared in the year, how you HODLed, got Rekt, or became a legend of a flipper. Ofcourse, also learn how much richer you would be if gas did not exist. WAGMI, and have a great 2023 ahead!",
+    "external_url": "https://truts.xyz/",
+    "image": "https://gateway.lighthouse.storage/ipfs/QmPWGWPGqsxTCZ5cG9FCseBD9joSekw8YA2gRciWiH3a68/0.png",
+    "animation_url": "https://gateway.lighthouse.storage/ipfs/QmSxKh8RextQfVYu4UiZFFQAAmCEJ43RSaUbFerQwfNXGt/0.mp4",
+    "attributes": [
+        {
+            "trait_type": "color",
+            "value": "black"
+        },
+        {
+            "trait_type": "wallet persona",
+            "value": "flipper"
+        }
+    ]
+}

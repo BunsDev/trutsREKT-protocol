@@ -24,9 +24,8 @@ module.exports = {
       accounts: [process.env.ACCOUNT_KEY],
     },
     polygon: {
-      gasLimit: 205000,
       url: process.env.POLYGON_MAINNET_URL,
-      accounts: [process.env.ACCOUNT_KEY],
+      accounts: [process.env.POLYGON_MAINNET],
     },
     fuji: {
       url: 'https://api.avax-test.network/ext/bc/C/rpc',

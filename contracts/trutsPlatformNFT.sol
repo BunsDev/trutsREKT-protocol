@@ -10,15 +10,20 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
-contract trutsREKT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
+// import "@openzeppelin/contracts/utils/Counters.sol";
+
+contract trutsPlatformNFT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
+    // using Counters for Counters.Counter;
+    // Counters.Counter private _tokenIds;
+
     using Strings for uint8;
-    string public baseURI;
+
     bool public publicSaleActive;
-    string[] public arrayOfTokenUri;
     mapping(bytes => bool) internal signatureUsed;
     address private _signerAddress = 0x50CB4b45B7C3eee59c8e5897af7DD1eFbfCecED4;
-    mapping(uint256 => uint8) public tokenIdToNumber;
+    mapping(uint256 => string) public tokenIdToTokenUri;
     address[] public admins;
+
     mapping(address => bool) public ownerByAddress;
 
     //Constructor
@@ -85,21 +90,24 @@ contract trutsREKT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
         return ECDSA.recover(messageDigest, signature);
     }
 
-    function mintNewNFT(bytes memory signature, uint8 _idNumber) public {
+    function mintNewNFT(bytes memory signature, string memory _tokenURI)
+        public
+    {
         require(publicSaleActive, "not ready for sale");
-        require(_idNumber < 6, "Token URI does not exist");
         require(balanceOf(_msgSender()) < 1, "Max NFT mint Limit reached");
         require(!signatureUsed[signature], "Signature has already been used.");
         uint256 supply = totalSupply();
+        // _tokenIds.increment();
+        // uint256 newItemId = _tokenIds.current();
 
         require(
             _signerAddress == recoverSigner(signature),
             "Signer address mismatch."
         );
-
         // require(balanceOf(_msgSender()) == 0, "User already minted");
         _safeMint(_msgSender(), 1);
-        tokenIdToNumber[supply + 1] = _idNumber;
+
+        tokenIdToTokenUri[supply] = _tokenURI;
         signatureUsed[signature] = true;
     }
 
@@ -110,24 +118,33 @@ contract trutsREKT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
         override
         returns (string memory)
     {
-        require(_exists(tokenId), "Non Existent Token");
-        string memory currentBaseURI = _baseURI();
+        if (!_exists(tokenId)) revert URIQueryForNonexistentToken();
 
-        return (
-            bytes(currentBaseURI).length > 0
-                ? string(
-                    abi.encodePacked(
-                        currentBaseURI,
-                        tokenIdToNumber[tokenId].toString(),
-                        ".json"
-                    )
-                )
-                : ""
+        return tokenIdToTokenUri[tokenId];
+    }
+
+    function _beforeTokenTransfers(
+        address from,
+        address to,
+        uint256 startTokenId,
+        uint256 quantity
+    ) internal virtual override {
+        require(
+            from == address(0) || to == address(0),
+            "This a Soulbound token. It cannot be transferred. It can only be burned by the token owner."
         );
     }
 
-    function setBaseURI(string memory _newBaseURI) public onlyAdmins {
-        baseURI = _newBaseURI;
+    // function burn(uint256 tokenId) external {
+    //     require(
+    //         ownerOf(tokenId) == msg.sender,
+    //         "Only the owner of the token can burn it."
+    //     );
+    //     _burn(tokenId);
+    // }
+
+    function _startTokenId() internal view virtual override returns (uint256) {
+        return 0;
     }
 
     function setPublicSaleActive(bool _state) public onlyAdmins {
@@ -145,5 +162,9 @@ contract trutsREKT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
 
     function getAdmins() public view returns (address[] memory) {
         return admins;
+    }
+
+    function SetSignerAddress(address _newSignerAddress) external onlyAdmins {
+        _signerAddress = _newSignerAddress;
     }
 }

@@ -14,8 +14,10 @@ import { mainnet, polygon, optimism, arbitrum, polygonMumbai } from 'wagmi/chain
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+
+//change polygonMumbai to polygon and Rpc to polygon mainnet
 const { chains, provider } = configureChains(
-  [polygon, polygonMumbai],
+  [polygonMumbai],
   [
     jsonRpcProvider({
       rpc: () => {

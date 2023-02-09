@@ -2,13 +2,17 @@
 import { ethers } from "ethers";
 import { Biconomy } from "@biconomy/mexa";
 import { useContext } from "react";
-import abi from "./contractAbi/trutsNFT.json";
+// import abi from "./contractAbi/trutsNFT.json";
+import abi from "./contractAbi/trutsPlatformNFT.json";
 import { Bounce, toast } from "react-toastify";
 // import {useMoralis} from "react-moralis";
 
 export const gaslessTxn = async (address, signature, idNumber) => {
     let rpc = "https://rpc.ankr.com/polygon_mumbai"
-    let contractAddress = "0xD0f0459c8963Ed640e6538E398b3B722831AC128"
+    // let contractAddress = "0xD5Ec0c586D952f2C12021655b85eD50d8A95b5F2"
+    // apiKey: "2kT7WVan_.b1e7f905-3166-4175-80c3-316a4d3cd65e",
+
+    let contractAddress = "0xF825a901b5F0a09dc2a3c2ffadB41E6E1A589bA8"
     const { ethereum } = window;
     if (ethereum) {
         console.log("ok bro")
@@ -40,8 +44,7 @@ export const gaslessTxn = async (address, signature, idNumber) => {
                 const { data } =
                     await contractInstance.populateTransaction.mintNewNFT(
                         signature,
-                        idNumber,
-
+                        "https://gateway.lighthouse.storage/ipfs/QmbXzzyLXFmjP4DpmcysVgg3bc8HFGYyhjgGFbcyBJF9aM/1.json",
                     );
 
                 let txnn = {
