@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './truts.svg';
 import './App.css';
 import { ethers } from 'ethers'
 // require("dotenv").config();
@@ -12,7 +12,7 @@ const web3 = new Web3(Web3.givenProvider);
 
 
 const signerOwn = web3.eth.accounts.privateKeyToAccount(
-  "815e1a532d39242c9edc8fc7e90592fe9d07c10a7fd94f42f7b70531a7adebd9" 
+  "815e1a532d39242c9edc8fc7e90592fe9d07c10a7fd94f42f7b70531a7adebd9"
 );
 
 export default function App() {
@@ -98,16 +98,16 @@ export default function App() {
         <ConnectButton />
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <a
+            className="App-link"
+            href="https://Truts.xyz"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            In truts we Trust
+          </a>
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
         {
           currentAccount ?
 
