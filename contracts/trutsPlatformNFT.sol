@@ -32,13 +32,13 @@ contract trutsPlatformNFT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
         string memory _symbol,
         address _trustedForwarder
     ) ERC721A(_name, _symbol) ERC2771Context(_trustedForwarder) {
-        admins.push(msg.sender);
-        ownerByAddress[msg.sender] = true;
+        admins.push(_msgSender());
+        ownerByAddress[_msgSender()] = true;
     }
 
     modifier onlyAdmins() {
         require(
-            ownerByAddress[msg.sender] == true,
+            ownerByAddress[_msgSender()] == true,
             "only admins can call this fucntion "
         );
         _;
@@ -135,13 +135,13 @@ contract trutsPlatformNFT is ERC2771Context, ERC721A, Ownable, ReentrancyGuard {
         );
     }
 
-    // function burn(uint256 tokenId) external {
-    //     require(
-    //         ownerOf(tokenId) == msg.sender,
-    //         "Only the owner of the token can burn it."
-    //     );
-    //     _burn(tokenId);
-    // }
+    function burn(uint256 tokenId) external {
+        require(
+            ownerOf(tokenId) == _msgSender(),
+            "Only the owner of the token can burn it."
+        );
+        _burn(tokenId);
+    }
 
     function _startTokenId() internal view virtual override returns (uint256) {
         return 0;

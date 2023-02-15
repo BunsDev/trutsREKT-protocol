@@ -9,8 +9,10 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useProvider, useAccount } from 'wagmi'
 
 const web3 = new Web3(Web3.givenProvider);
+
+
 const signerOwn = web3.eth.accounts.privateKeyToAccount(
-  "815e1a532d39242c9edc8fc7e90592fe9d07c10a7fd94f42f7b70531a7adebd9"
+  "815e1a532d39242c9edc8fc7e90592fe9d07c10a7fd94f42f7b70531a7adebd9" 
 );
 
 export default function App() {

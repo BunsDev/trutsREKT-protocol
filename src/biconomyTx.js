@@ -12,7 +12,7 @@ export const gaslessTxn = async (address, signature, idNumber) => {
     // let contractAddress = "0xD5Ec0c586D952f2C12021655b85eD50d8A95b5F2"
     // apiKey: "2kT7WVan_.b1e7f905-3166-4175-80c3-316a4d3cd65e",
 
-    let contractAddress = "0xF825a901b5F0a09dc2a3c2ffadB41E6E1A589bA8"
+    let contractAddress = "0x73F9E1DD0Aa8A8dBC1BDA5B7B1204Ee80F2B745f"
     const { ethereum } = window;
     if (ethereum) {
         console.log("ok bro")
