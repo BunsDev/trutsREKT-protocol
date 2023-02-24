@@ -10,4 +10,9 @@ Steps to Incribe ordinals
 3. Add bitcon to BINANCE or  EXODUS wallet and pay by scanning the QR code
 
 
+You can find the complete guide here:
 
+
+receiving inscriptions and ordinals with sparrow wallet:
+
+https://gist.github.com/windsok/5b53a1ced6ef3eddbde260337de28980

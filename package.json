@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@arcana/auth": "^1.0.1",
     "@biconomy/mexa": "^2.0.38",
+    "@onflow/fcl": "^1.3.2",
     "@openzeppelin/contracts": "^4.8.0",
     "@rainbow-me/rainbowkit": "^0.8.1",
     "@tanstack/react-query": "^4.20.4",
